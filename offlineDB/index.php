@@ -112,8 +112,8 @@
     </section>
     <div id="filebutton">
         <form name="filefrm" action="index.php" method="post">
-            <button type="button" id="filesave">filesave</button>
-            <button type="button" id="fileload" onclick="openCSVFile();">fileload</button>
+            <button type="button" id="filesave">save</button>
+            <button type="button" id="fileload" onclick="openCSVFile();">load</button>
         </form>
     </div>
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
