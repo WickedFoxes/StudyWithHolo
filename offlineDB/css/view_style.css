@@ -87,11 +87,11 @@ section form div td.timeline{
 section form div td.subtittle{
     width: 30%;
 }
-section form div td.text{
+section form div td.note{
     width: 60%;
 }
 
-section form div input[name="str_timeline[]"]{
+section form div textarea[name="str_timeline[]"]{
     width: 90%;
     text-align: center;
 }
@@ -99,7 +99,7 @@ section form div textarea[name="subtittle[]"]{
     width: 90%;
     height: 50%;
 }
-section form div textarea[name="text[]"]{
+section form div textarea[name="note[]"]{
     width: 90%;
     height: 70%;
 }

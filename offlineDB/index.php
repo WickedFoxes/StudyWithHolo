@@ -29,16 +29,6 @@
     }
 ?>
 
-<?php
-  // 'HH:mm:ss' 형태의 시간을 초로 환산
-  function getSeconds($HMS) {
-      $tmp = explode(':', $HMS);
-      $min = intval($tmp[0])*60;
-      $sec = intval($tmp[1]);
-      return $sec + $min;
-  }
-?>
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -61,7 +51,7 @@
                     </td>
                     <td>
                         <span>자막:</span>
-                        <textarea name="subtittle"></textarea>
+                        <textarea name="subtittle"><?php echo $_POST["subtittle"];?></textarea>
                     </td>
                     <td>
                         <input type="submit" name="submit"/>
@@ -77,31 +67,35 @@
         <!--table-->
         <form name="tablefrm" action="view_update.php" method="post">
             <div class="studydata" style="overflow:scroll;">
-                <table width="100%" cellspacing="0" cellpadding="0">
+                <table id="table" width="100%" cellspacing="0" cellpadding="0">
                     <?php
                         foreach ($table_list as $td_list)
                         {
                             if($td_list[0]=="id") continue;
                     ?>
-                    <tr>
+                    <tr id="<?php echo $td_list[0];?>">
                         <td class="timeline">
                             <button
                                 type="button"
                                 name="timeline_button"
-                                onclick="player.loadVideoById('<?php echo $view_link?>', <?php echo getSeconds($td_list[1])?>);player.playVideo();">timeline</button>
-                            <input type="text" name="str_timeline[]" value="<?php echo $td_list[1];?>">
+                                onclick="setsec('<?php echo $view_link?>', <?php echo $td_list[0]?>);">timeline</button>
+                            <textarea type="text" name="str_timeline[]" value="time<?php echo $td_list[0]?>"><?php echo $td_list[1];?></textarea>
                         </td>
                         <td class="subtittle">
                             <button
                                 type="button"
                                 name="subtittle_button"
                                 value="<?php echo $td_list[0]?>"
-                                onclick="copy_to_clipboard(<?php echo $td_list[0]?>);" >subtittle</button>
-                            <textarea name="subtittle[]" value="<?php echo $td_list[0]?>"><?php echo $td_list[2]?></textarea>
+                                onclick="copy_to_clipboard(<?php echo $td_list[0]?>, 'subtittle');" >subtittle</button>
+                            <textarea name="subtittle[]" value="sub<?php echo $td_list[0]?>"><?php echo $td_list[2]?></textarea>
                         </td>
-                        <td class="text">
-                            문장
-                            <textarea name="text[]" styel="white-space:pre-line;"><?php echo $td_list[3] ?></textarea>
+                        <td class="note">
+                            <button
+                                type="button"
+                                name="note_button"
+                                value="<?php echo $td_list[0]?>"
+                                onclick="copy_to_clipboard(<?php echo $td_list[0]?>, 'note');">note</button>
+                            <textarea name="note[]" value="note<?php echo $td_list[0]?>" styel="white-space:pre-line;"><?php echo $td_list[3] ?></textarea>
                         </td>
                         <input type="hidden" name="id[]" value=<?php echo $td_list[0]?>>
                     </tr>
@@ -160,8 +154,25 @@
         function stopVideo() {
             player.stopVideo();
         }
+        function setsec(view_link, id){
+            player.loadVideoById(view_link, get_timeline(id));player.playVideo();
+        }
     </script>
+
     <script>
+        // 타임라인 얻기
+        function get_timeline(vid) {
+            var timeline = $("textarea[value='time" + vid + "']").val();
+            var secArray = timeline.split(':');
+            if (secArray.length == 2) {
+                return 60 * parseInt(secArray[0]) + parseInt(secArray[1]);
+            }
+            if(secArray.length == 3) {
+                return 60 * 60 * parseInt(secArray[0]) + 60 * parseInt(secArray[1]) + parseInt(secArray[2]);
+            }
+        }
+
+        // 문자열 \n 변형
         function addslashes(string) {
             return string
                 .replace(/\n/g, '\\n')
@@ -170,13 +181,20 @@
             return string
                 .replace(/\\n/g, '\n')
         }
-        function copy_to_clipboard(vid) {
-            var copyText = $("textarea[value="+vid+"]");
+
+        // 클립보드 복사
+        function copy_to_clipboard(vid, type) {
+            if(type=="subtittle"){
+                var copyText = $("textarea[value='sub"+vid+"']");
+            }
+            if(type=="note"){
+                var copyText = $("textarea[value='note"+vid+"']");
+            }
             copyText.select();
             document.execCommand("Copy");
         }
 
-
+        // 파일 저장, 불러오기
         $("#filesave").click(function () {
             let filename = "testFile.csv";
             getCSV(filename);
@@ -193,12 +211,12 @@
             var id_list = document.getElementsByName("id[]");
             var timeline_list = document.getElementsByName("str_timeline[]");
             var subtittle_list = document.getElementsByName("subtittle[]");
-            var text_list = document.getElementsByName("text[]");
+            var note_list = document.getElementsByName("note[]");
 
             for(var i=0; i<id_list.length; i++){
-                if(!timeline_list[i].value && !subtittle_list[i].value && !text_list[i].value) continue;
+                if(!timeline_list[i].value && !subtittle_list[i].value && !note_list[i].value) continue;
                 else{
-                    row = [id_list[i].value, timeline_list[i].value, addslashes(subtittle_list[i].value),addslashes(text_list[i].value)];
+                    row = [id_list[i].value, timeline_list[i].value, addslashes(subtittle_list[i].value),addslashes(note_list[i].value)];
                     csv.push(row.join(","));
                 }
             }
@@ -233,6 +251,7 @@
             };
             input.click();
         }
+
         function processFile(file) {
             var reader = new FileReader();
             reader.onload = function () {
