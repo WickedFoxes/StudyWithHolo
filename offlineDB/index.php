@@ -1,5 +1,4 @@
 <?php
-    $view_tittle = $_POST['tittle'];
     $view_link = $_POST['link'];
 
     $subtittle = $_POST['subtittle'];
@@ -32,13 +31,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><?php echo $view_tittle ?></title>
+    <title>Study with Youtube</title>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="css/view_style.css">
   </head>
   <body>
     <header>
         <h1>Study with Youtube</h1>
+        <p><a href="help.php">도움말 보기</a><p>
     </header>
     <!--search-->
     <div id="content">
