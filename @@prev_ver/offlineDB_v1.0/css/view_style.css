@@ -1,0 +1,126 @@
+header{
+    border: 10em;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+section{
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: -ms-flex;
+    display: flex;
+    -moz-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    position: relative;
+    margin: 0 0 0 0;
+}
+
+section h2 {
+    display: inline-block;
+    width: 100%;
+}
+
+div#content {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+div#content form{
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+div#content form table{
+    margin-left: auto; margin-right: auto;
+}
+
+
+div#content form span, 
+div#content form input, 
+div#content form textarea,
+div#content form button{
+    vertical-align: inherit;
+}
+
+section iframe{
+    -moz-transition: -moz-transform 0.5s ease;
+    -webkit-transition: -webkit-transform 0.5s ease;
+    -ms-transition: -ms-transform 0.5s ease;
+    transition: transform 0.5s ease;
+    position: relative;
+    display: block;
+    width: 45%;
+    height: 45em;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 1em 1em 1em 1em;
+}
+
+section form{
+    -moz-transition: -moz-transform 0.5s ease;
+    -webkit-transition: -webkit-transform 0.5s ease;
+    -ms-transition: -ms-transform 0.5s ease;
+    transition: transform 0.5s ease;
+    position: relative;
+    display: block;
+    width: 45%;
+    height: 45em;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 1em 1em 1em 1em;
+}
+
+section form div{
+    width: 100%;
+    height: 100%;
+}
+
+section form div td{
+    height: 130px;
+}
+section form div td.timeline{
+    width: 10%;
+}
+section form div td.subtittle{
+    width: 30%;
+}
+section form div td.note{
+    width: 60%;
+}
+
+section form div textarea[name="str_timeline[]"]{
+    width: 90%;
+    text-align: center;
+}
+section form div textarea[name="subtittle[]"]{
+    width: 90%;
+    height: 50%;
+}
+section form div textarea[name="note[]"]{
+    width: 90%;
+    height: 70%;
+}
+
+@media screen and (max-width: 1000px) {
+
+    section div#content form {
+        display: inline-block;
+        width: 100%;
+        height: 5em;
+    }
+    section iframe {
+        display: inline-block;
+        width: 100%;
+        height: 25em;
+    }
+    section form[name="tablefrm"] {
+        display: inline-block;
+        width: 100%;
+        height: 20em;
+    }
+    
+
+}
