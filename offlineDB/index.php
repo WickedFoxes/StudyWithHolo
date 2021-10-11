@@ -51,7 +51,7 @@
                     </td>
                     <td>
                         <span>자막:</span>
-                        <textarea name="subtittle"><?php echo $_POST["subtittle"];?></textarea>
+                        <textarea name="subtittle"></textarea>
                     </td>
                     <td>
                         <input type="submit" name="submit"/>
